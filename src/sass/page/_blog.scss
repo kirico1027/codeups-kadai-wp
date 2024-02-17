@@ -1,0 +1,78 @@
+@use "global" as *;
+
+.blog {
+  padding-top: rem(84);
+
+  @include mq(md) {
+    padding-top: rem(101);
+    position: relative;
+  }
+}
+
+.blog::before {
+  @include mq(md) {
+    position: absolute;
+    content: "";
+    display: inline-block;
+    background-image: url(../images/common/blog-bg.jpg);
+    background-size: cover;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    aspect-ratio: 1440/500;
+    height: auto;;
+  }
+}
+
+
+.blog__inner {
+  width: 100%;
+  padding-right: rem(21);
+  padding-left: rem(21);
+  margin-right: auto;
+  margin-left: auto;
+  max-width: rem(602);
+
+  @include mq("md") {
+    max-width: $inner + strip-unit($padding-pc) * 2;
+    padding-right: $padding-pc;
+    padding-left: $padding-pc;
+  }
+}
+
+.blog__cards {
+  margin-top: rem(29);
+  position: relative;
+
+  @include mq(md) {
+    margin-top: rem(80);
+  }
+}
+
+.blog__cards::before {
+  content: '';
+  position: absolute;
+  display: none;
+  width: rem(437);
+  height: rem(201);
+  background-image: url(../images/common/blog-illustration.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  left: calc(50% - min(48vw, rem(620)));
+  top: rem(-222);
+
+  @include mq(md) {
+    display: block;
+  }
+}
+
+.blog__button {
+  text-align: center;
+  margin-top: rem(39);
+
+  @include mq(md) {
+    margin-top: rem(81);
+  }
+}

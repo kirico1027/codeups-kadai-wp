@@ -1,0 +1,28 @@
+@use "global" as *;
+
+.information {
+  padding: rem(84) 0 rem(84);
+  background-color: $accent-bg;
+
+  @include mq(md) {
+    padding: rem(100) 0 rem(76);
+  }
+}
+
+.information__card {
+  margin-top: rem(29);
+
+  @include mq(md) {
+    margin-top: rem(40);
+    margin-left: rem(-3);
+  }
+}
+
+.information__button {
+  text-align: center;
+  margin-top: rem(39.5);
+
+  @include mq(md) {
+    margin-top: rem(39);
+  }
+}

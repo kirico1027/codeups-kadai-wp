@@ -10,8 +10,7 @@
 
       <div class="page-campaign__category-list category-list">
         <?php
-        $current_term_id = 0; // デフォルトで0をセットしておくか、エラー時のデフォルト値を設定
-        // 現在のクエリに関連するオブジェクトを取得
+        $current_term_id = 0;
         $queried_object = get_queried_object();
         $terms = get_terms(array(
           'taxonomy' => 'campaign_category',

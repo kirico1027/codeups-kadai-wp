@@ -10,8 +10,7 @@
       <div class="archive-voice__category-list category-list">
 
         <?php
-        $current_term_id = 0; // デフォルトで0をセットしておくか、エラー時のデフォルト値を設定
-        // 現在のクエリに関連するオブジェクトを取得
+        $current_term_id = 0;
         $queried_object = get_queried_object();
         $terms = get_terms(array(
           'taxonomy' => 'voice_category',
@@ -54,6 +53,7 @@
         ?>
         <?php if ($the_query->have_posts()) : ?>
         <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
+
         <li class="voice-cards__card voice-card">
           <a href="#">
             <div class="voice-card__item">

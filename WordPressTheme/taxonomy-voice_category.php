@@ -76,7 +76,6 @@
           "posts_per_page" => 6,
           'tax_query' => array(
             array(
-              // タクソノミーのスラッグを指定
               'taxonomy' => 'voice_category',
               'field'    => 'slug',
               'terms'    => $genre_slug,

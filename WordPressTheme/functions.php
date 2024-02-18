@@ -64,17 +64,6 @@ function redirect_to_thanks_page()
   EOD;
 }
 
-
-function add_register_nav_menu() {
-  register_nav_menu( 'menu-primary', 'メニュー プライマリ' ); // 任意の識別子, 説明
-}
-add_action( 'after_setup_theme', 'add_register_nav_menu' );
-// メニューを追加
-//add_action( 'after_setup_theme', 'register_menu' );
-//function register_menu() {
- // register_nav_menu( 'primary', __( 'Primary Menu', 'theme-slug' ) );
-//}
-
 // 404ページの場合、文字色を白に変更するスタイルを追加
 function custom_breadcrumb_styles() {
   if (is_404()) {

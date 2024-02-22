@@ -24,6 +24,10 @@ html {
 	font-size: 16px;
 }
 
+:root {
+	scroll-padding-top: 5rem;
+}
+
 *,
 *::before,
 *::after {
@@ -208,7 +212,7 @@ a {
 }
 
 .blog__cards::before {
-	background-image: url(../images/common/blog-illustration.png);
+	background-image: url(../images/common/fish-illustration-left.png);
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -1624,6 +1628,7 @@ a {
 .campaign-card__img img {
 	-o-object-fit: cover;
 	aspect-ratio: 280/188;
+	height: auto;
 	object-fit: cover;
 }
 
@@ -3529,6 +3534,10 @@ span.wpcf7-spinner {
 
 html {
 	font-size: 1.4814814815vw;
+}
+
+:root {
+	scroll-padding-top: 5.625rem;
 }
 
 .about__main-image {

@@ -53,7 +53,7 @@ if (is_page('about-us')) {
 <section class="sub-mv">
   <picture class="sub-mv__picture">
     <source srcset="<?php echo esc_url(get_theme_file_uri($image_pc)); ?>" media="(min-width: 768px)" type="image/jpg">
-    <img src="<?php echo esc_url(get_theme_file_uri($image_sp)); ?>" alt="" loading="lazy">
+    <img src="<?php echo esc_url(get_theme_file_uri($image_sp)); ?>" alt="">
   </picture>
   <h1 class="sub-mv__title"><?php echo esc_html($mv_title); ?></h1>
 </section>

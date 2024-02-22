@@ -16,7 +16,7 @@
           'taxonomy' => 'voice_category',
           'orderby' => 'name',
           'order' => 'ASC',
-          'number' => 3
+          'number' => 3,
         ));
         ?>
 
@@ -43,17 +43,8 @@
       </div>
 
       <ul class="archive-voice__cards voice-cards">
-
-        <?php
-        $args = array(
-          "post_type" => "voice",
-          "posts_per_page" => 6,
-        );
-        $the_query = new WP_Query($args);
-        ?>
-        <?php if ($the_query->have_posts()) : ?>
-        <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
-
+        <?php if (have_posts()) : ?>
+        <?php while (have_posts()) : the_post(); ?>
         <li class="voice-cards__card voice-card">
           <a href="#">
             <div class="voice-card__item">
@@ -90,9 +81,7 @@
           </a>
         </li>
         <?php endwhile; ?>
-        <?php wp_reset_postdata(); ?>
         <?php endif; ?>
-
       </ul>
 
       <div class="page-campaign__pagenavi pagenavi">

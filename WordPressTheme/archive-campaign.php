@@ -16,7 +16,7 @@
           'taxonomy' => 'campaign_category',
           'orderby' => 'name',
           'order' => 'ASC',
-          'number' => 3
+          'number' => 10
         ));
         ?>
         <ul class="category-list__items">
@@ -40,16 +40,10 @@
           ?>
         </ul>
       </div>
-
       <ul class="page-campaign__cards">
-        <?php
-        $args = array(
-          "post_type" => "campaign",
-          "posts_per_page" => 4,
-        );
-        $the_query = new WP_Query($args);
-        ?>
-        <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
+        <?php if (have_posts()) : ?>
+        <?php while (have_posts()) : the_post(); ?>
+        <?php setup_postdata($post); ?>
 
         <li class="page-campaign__card page-campaign-card">
           <figure class="page-campaign-card__img">
@@ -63,20 +57,21 @@
           <div class="page-campaign-card__body">
             <div class="page-campaign-card__category">
               <?php
-                  $taxonomy_terms = get_the_terms($post->ID, 'campaign_category');
-                  if (!empty($taxonomy_terms)) {
-                    foreach ($taxonomy_terms as $taxonomy_term) {
-                      echo '<span
-                      >' . esc_html($taxonomy_term->name) . '</span>';
-                    }
-                  }
-                  ?>
+            $taxonomy_terms = get_the_terms(get_the_ID(), 'campaign_category');
+            if (!empty($taxonomy_terms)) {
+              foreach ($taxonomy_terms as $taxonomy_term) {
+                echo '<span>' . esc_html($taxonomy_term->name) . '</span>';
+              }
+            }
+            ?>
             </div>
             <h2 class="page-campaign-card__title-main"><?php the_title(); ?></h2>
             <p class="page-campaign-card__title-sub">全部コミコミ(お一人様)</p>
+            <?php if (get_field("price_before") && get_field("price_after")) : ?>
             <p class="page-campaign-card__price">
               <span>¥<?php the_field("price_before"); ?></span>¥<?php the_field("price_after"); ?>
             </p>
+            <?php endif; ?>
             <p class="page-campaign-card__text">ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。<br>
               ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキスト
             </p>
@@ -89,9 +84,13 @@
             </div>
           </div>
         </li>
+
         <?php endwhile; ?>
         <?php wp_reset_postdata(); ?>
+        <?php endif; ?>
       </ul>
+
+
     </div>
   </div>
 

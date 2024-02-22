@@ -17,9 +17,9 @@ add_action('after_setup_theme', 'my_setup');
 /* CSSとJavaScriptの読み込み */
 function my_script_init()
 { // WordPressに含まれているjquery.jsを読み込まない
-wp_deregister_script('jquery');
-// jQueryの読み込み
-wp_enqueue_script('jquery', '//code.jquery.com/jquery-3.6.1.min.js', "", '1.0.1');
+  wp_deregister_script('jquery');
+  // jQueryの読み込み
+  wp_enqueue_script('jquery', '//code.jquery.com/jquery-3.6.1.min.js', "", '1.0.1');
 // プラグイン
 wp_enqueue_script( 'swiper', "//cdn.jsdelivr.net/npm/swiper@7/swiper-bundle.min.js", "7.0.0", true );
 wp_enqueue_script( 'inview', get_theme_file_uri() . '/assets/js/jquery.inview.min.js', array(), '1.0.1');
@@ -74,3 +74,88 @@ function custom_breadcrumb_styles() {
   }
 }
 add_action('wp_head', 'custom_breadcrumb_styles');
+
+// アーカイブの表示投稿数の制御
+function my_pre_get_posts($query)
+{
+  if (is_admin() || !$query->is_main_query()) {
+    return;
+  } elseif ($query->is_post_type_archive('campaign')) {
+    $query->set('posts_per_page', 4);
+    return;
+  } elseif ($query->is_post_type_archive('voice')) {
+    $query->set('posts_per_page', 6);
+    return;
+  }
+}
+add_action('pre_get_posts', 'my_pre_get_posts');
+
+
+
+//クローラーのアクセス判別
+function is_bot()
+{
+  $ua = $_SERVER['HTTP_USER_AGENT'];
+  $bot = array(
+    "googlebot",
+    "msnbot",
+    "yahoo"
+  );
+  foreach ($bot as $bot) {
+    if (stripos($ua, $bot) !== false) {
+      return true;
+    }
+  }
+  return false;
+}
+
+//アクセス数を保存
+function set_post_views()
+{
+  if (!is_user_logged_in() && !is_bot()) {
+    if (is_single()) {
+      $post_id = get_the_ID();
+      $count_key = 'post_views_count';
+      $count = get_post_meta($post_id, $count_key, true);
+      if (empty($count)) {
+        delete_post_meta($post_id, $count_key);
+        add_post_meta($post_id, $count_key, 1);
+      } else {
+        $count = $count + 1;
+        update_post_meta($post_id, $count_key, $count);
+      }
+    }
+  }
+}
+add_action('wp_head', 'set_post_views');
+
+/*管理画面のカラムを追加*/
+function manage_posts_columns($columns)
+{
+  $columns['post_views_count'] = 'view数';
+  $columns['thumbnail'] = 'サムネイル';
+  return $columns;
+}
+add_filter('manage_posts_columns', 'manage_posts_columns');
+
+/*アクセス数を出力*/
+function add_column($column_name, $post_id)
+{
+  /*View数呼び出し*/
+  if ($column_name === 'post_views_count') {
+    $pv = get_post_meta($post_id, 'post_views_count', true);
+    echo esc_html($pv); // エスケープ方法を修正
+  }
+  /*サムネイル呼び出し*/
+  if ($column_name === 'thumbnail') {
+    $thumb = get_the_post_thumbnail($post_id, array(100, 100), 'thumbnail');
+    echo $thumb; // サムネイルはHTMLコンテンツなのでエスケープしない
+  }
+
+  /*ない場合は「なし」を表示する*/
+  if (empty($pv) && empty($thumb)) {
+    echo esc_html__('None'); // テキストドメインを修正
+  }
+}
+
+add_action('manage_posts_custom_column', 'add_column', 10, 2);

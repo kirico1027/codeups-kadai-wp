@@ -24,6 +24,7 @@ $campaign_category_trial_diving = esc_url(home_url("/campaign_category/trial_div
 $campaign_category_fun_diving = esc_url(home_url("/campaign_category/fun_diving"));
 $privacypolicy = esc_url(home_url("/privacypolicy"));
 $terms_of_service = esc_url(home_url("/terms-of-service"));
+$sitemap = esc_url(home_url("/sitemap"));
 ?>
 
 <body <?php body_class(); ?>>
@@ -126,13 +127,13 @@ $terms_of_service = esc_url(home_url("/terms-of-service"));
                   <a href="<?php echo $price; ?>">料金一覧</a>
                 </div>
                 <div class="header__drawer-item">
-                  <a href="<?php echo $price; ?>">ライセンス講習</a>
+                  <a href="<?php echo $price; ?>#price-license">ライセンス講習</a>
                 </div>
                 <div class="header__drawer-item">
-                  <a href="<?php echo $price; ?>">体験ダイビング</a>
+                  <a href="<?php echo $price; ?>#price-trial">体験ダイビング</a>
                 </div>
                 <div class="header__drawer-item">
-                  <a href="<?php echo $price; ?>">ファンダイビング</a>
+                  <a href="<?php echo $price; ?>#price-fun">ファンダイビング</a>
                 </div>
               </div>
               <div class="header__drawer-item header__drawer-item--main">
@@ -146,6 +147,9 @@ $terms_of_service = esc_url(home_url("/terms-of-service"));
               </div>
               <div class="header__drawer-item header__drawer-item--main">
                 <a href="<?php echo $contact; ?>">お問い合わせ</a>
+              </div>
+              <div class="header__drawer-item header__drawer-item--main">
+                <a href="<?php echo $sitemap; ?>">サイトマップ</a>
               </div>
             </div>
           </div>

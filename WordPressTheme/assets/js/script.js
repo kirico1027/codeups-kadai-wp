@@ -115,7 +115,7 @@ jQuery(function ($) {
   // モーダル
   $(function () {
     $(".page-about-gallery__image img").click(function () {
-      $(".modal-image").html($(this).prop('outerHTML'));
+      $(".modal-image").html($(this).prop("outerHTML"));
       $(".modal-image").fadeIn(500);
       $("body").addClass("is-noscroll");
     });
@@ -137,27 +137,27 @@ jQuery(function ($) {
 
   // faq
   jQuery(function ($) {
-    $('.js-faq-question').on('click', function () {
+    $(".js-faq-question").on("click", function () {
       $(this).next().slideToggle();
-      $(this).toggleClass('is-open');
+      $(this).toggleClass("is-open");
     });
   });
 
   // タブ
   $(document).ready(function () {
     // URLから 'tab' パラメータを取得
-    var tab = new URL(window.location.href).searchParams.get('tab');
+    var tab = new URL(window.location.href).searchParams.get("tab");
 
     // タブメニューのクリックイベント
-    $('.js-tab-menu').on('click', function () {
-      var number = $(this).data('number');
+    $(".js-tab-menu").on("click", function () {
+      var number = $(this).data("number");
 
       // アクティブクラスの切り替え
-      $('.js-tab-menu').removeClass('is-active');
-      $(this).addClass('is-active');
-      $('.js-tab-content').removeClass('is-active');
+      $(".js-tab-menu").removeClass("is-active");
+      $(this).addClass("is-active");
+      $(".js-tab-content").removeClass("is-active");
       if (number) {
-        $('#' + number).addClass('is-active');
+        $("#" + number).addClass("is-active");
       }
     });
 
@@ -167,7 +167,7 @@ jQuery(function ($) {
       $('.js-tab-menu[data-number="' + tab + '"]').click();
     } else {
       // URLパラメータがない場合、最初のタブをアクティブにする
-      $('.js-tab-menu:first').click();
+      $(".js-tab-menu:first").click();
     }
   });
 

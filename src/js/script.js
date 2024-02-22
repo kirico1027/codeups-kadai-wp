@@ -111,81 +111,78 @@ jQuery(function ($) {
     }
   });
 
+
   // モーダル
-  $(function ()
-	{$(".page-about-gallery__image img").click(function() {
-    $(".modal-image").html($(this).prop('outerHTML'));
-    $(".modal-image").fadeIn(500);
-    $("body").addClass("is-noscroll");
+  $(function () {
+    $(".page-about-gallery__image img").click(function () {
+      $(".modal-image").html($(this).prop("outerHTML"));
+      $(".modal-image").fadeIn(500);
+      $("body").addClass("is-noscroll");
+    });
+    $(".modal-image, .modal-image img").click(function () {
+      $(".modal-image").fadeOut(500);
+      $("body").removeClass("is-noscroll");
+    });
   });
-  $(".modal-image, .modal-image img").click(function() {
-    $(".modal-image").fadeOut(500);
-    $("body").removeClass("is-noscroll");
-  });
-});
 
-// アーカイブ
-$(function () {
-  $(".js-accordion__box .js-accordion__month").css(
-    "display",
-    "block"
-  );
-  $(".js-accordion__box .js-accordion__year").addClass("is-open");
-  $(".js-accordion__year").on("click", function () {
-    $(this).toggleClass("is-open");
-    $(this).next().slideToggle(300);
+  // アーカイブ
+  $(function () {
+    $(".js-accordion__box .js-accordion__month").css("display", "block");
+    $(".js-accordion__box .js-accordion__year").addClass("is-open");
+    $(".js-accordion__year").on("click", function () {
+      $(this).toggleClass("is-open");
+      $(this).next().slideToggle(300);
+    });
   });
-});
 
-// faq
-jQuery(function ($) {
-  $('.js-faq-question').on('click', function () {
+  // faq
+  jQuery(function ($) {
+    $(".js-faq-question").on("click", function () {
       $(this).next().slideToggle();
-      $(this).toggleClass('is-open');
+      $(this).toggleClass("is-open");
+    });
   });
-});
 
-// タブ
-$(document).ready(function() {
-  // URLから 'tab' パラメータを取得
-  const tab = new URL(window.location.href).searchParams.get('tab');
+  // タブ
+  $(document).ready(function () {
+    // URLから 'tab' パラメータを取得
+    const tab = new URL(window.location.href).searchParams.get("tab");
 
-  // タブメニューのクリックイベント
-  $('.js-tab-menu').on('click', function () {
-    const number = $(this).data('number');
+    // タブメニューのクリックイベント
+    $(".js-tab-menu").on("click", function () {
+      const number = $(this).data("number");
 
-    // アクティブクラスの切り替え
-    $('.js-tab-menu').removeClass('is-active');
-    $(this).addClass('is-active');
-    $('.js-tab-content').removeClass('is-active');
-    if (number) {
-      $('#' + number).addClass('is-active');
+      // アクティブクラスの切り替え
+      $(".js-tab-menu").removeClass("is-active");
+      $(this).addClass("is-active");
+      $(".js-tab-content").removeClass("is-active");
+      if (number) {
+        $("#" + number).addClass("is-active");
+      }
+    });
+
+    // 初期状態またはURLパラメータに基づくタブのアクティブ化
+    if (tab) {
+      // URLパラメータが存在する場合、該当するタブをアクティブにする
+      $('.js-tab-menu[data-number="' + tab + '"]').click();
+    } else {
+      // URLパラメータがない場合、最初のタブをアクティブにする
+      $(".js-tab-menu:first").click();
     }
   });
 
-  // 初期状態またはURLパラメータに基づくタブのアクティブ化
-  if (tab) {
-    // URLパラメータが存在する場合、該当するタブをアクティブにする
-    $('.js-tab-menu[data-number="' + tab + '"]').click();
-  } else {
-    // URLパラメータがない場合、最初のタブをアクティブにする
-    $('.js-tab-menu:first').click();
-  }
-});
+  // blog-detailのページナビ
+  $(document).ready(function () {
+    // 最初のページで前が無い場合
+    if ($(".single-pagenavi__prev").find("a").length === 0) {
+      $(".single-pagenavi__prev").hide();
+    }
 
-// blog-detailのページナビ
-$(document).ready(function () {
-  // 最初のページで前が無い場合
-  if ($(".single-pagenavi__prev").find("a").length === 0) {
-    $(".single-pagenavi__prev").hide();
-  }
-
-  // 最後のページで次が無い場合
-  if ($(".single-pagenavi__next").find("a").length === 0) {
-    $(".single-pagenavi__next").hide();
-  }
-});
+    // 最後のページで次が無い場合
+    if ($(".single-pagenavi__next").find("a").length === 0) {
+      $(".single-pagenavi__next").hide();
+    }
+  });
 
 
 });
-

@@ -6,39 +6,43 @@
           人気記事
         </h2>
         <ul class="sidebar-popular__list">
-          <li class="sidebar-popular__item">
-            <figure class="sidebar-popular__image">
-              <img src="<?php echo get_theme_file_uri(); ?>/assets/images/common/blog04.jpg" alt="鮮やかな黄色のサカナの画像"
-                loading="lazy">
-            </figure>
-            <div class="sidebar-popular__body">
-              <time datetime="2023-11-17" class="sidebar-popular__date date">2023.11/17</time>
-              <h3 class="sidebar-popular__text">ライセンス取得</h3>
-            </div>
+          <?php
+          $loopcounter = 0;
+
+          $args = array(
+            'post_type' => 'post',
+            'meta_key' => 'post_views_count',
+            'orderby' => 'meta_value_num',
+            'order' => 'DESC',
+            'posts_per_page' => 3
+          );
+          $the_query = new WP_Query($args);
+          if ($the_query->have_posts()) :
+            while ($the_query->have_posts()) : $the_query->the_post();
+              $loopcounter++; ?>
+          <li>
+            <a href="<?php echo get_permalink(); ?>">
+              <div class="sidebar-popular__item">
+                <figure class="sidebar-popular__image">
+                  <?php if (has_post_thumbnail()) : ?>
+                  <?php the_post_thumbnail('full'); ?>
+                  <?php endif; ?>
+                </figure>
+                <div class="sidebar-popular__body">
+                  <time datetime="<?php the_time('c'); ?>"
+                    class="sidebar-popular__date date"><?php the_time('Y.m/d'); ?></time>
+                  <h3 class="sidebar-popular__text"><?php the_title(); ?></h3>
+                </div>
+              </div>
+            </a>
           </li>
-          <li class="sidebar-popular__item">
-            <figure class="sidebar-popular__image">
-              <img src="<?php echo get_theme_file_uri(); ?>/assets/images/common/blog02.jpg" alt="優雅に泳ぐウミガメの画像"
-                loading="lazy">
-            </figure>
-            <div class="sidebar-popular__body">
-              <time datetime="2023-11-17" class="sidebar-popular__date date">2023.11/17</time>
-              <h3 class="sidebar-popular__text">ウミガメと泳ぐ</h3>
-            </div>
-          </li>
-          <li class="sidebar-popular__item">
-            <figure class="sidebar-popular__image">
-              <img src="<?php echo get_theme_file_uri(); ?>/assets/images/common/blog03.jpg" alt="イソギンチャクに隠れるカクレクマノミの画像"
-                loading="lazy">
-            </figure>
-            <div class="sidebar-popular__body">
-              <time datetime="2023-11-17" class="sidebar-popular__date date">2023.11/17</time>
-              <h3 class="sidebar-popular__text">カクレクマノミ</h3>
-            </div>
-          </li>
+          <?php endwhile;
+          endif;
+          wp_reset_postdata();
+          ?>
         </ul>
       </div>
-      <div class="sidebar__review sidebar-review">
+      <div class=" sidebar__review sidebar-review">
         <h2 class="sidebar-review__title sidebar-title">
           口コミ
         </h2>
@@ -62,7 +66,7 @@
           </figure>
           <div class="sidebar-review__body">
             <p class="sidebar-review__age"><?php the_field('personal_info'); ?></p>
-            <h3 class="sidebar-review__title"><?php echo wp_trim_words( get_the_title(), 20, '…' ); ?></h3>
+            <h3 class="sidebar-review__title"><?php echo wp_trim_words(get_the_title(), 20, '…'); ?></h3>
           </div>
           <?php endwhile; ?>
           <?php wp_reset_postdata(); ?>
@@ -121,18 +125,18 @@
         <div class="sidebar-archive__accordion sidebar-accordion">
           <div class="sidebar-accordion__box js-accordion__box">
             <?php
-          $year_prev = null;
-          $months = $wpdb->get_results("SELECT DISTINCT MONTH( post_date ) AS month ,
+            $year_prev = null;
+            $months = $wpdb->get_results("SELECT DISTINCT MONTH( post_date ) AS month ,
                                       YEAR( post_date ) AS year,
                                       COUNT( id ) as post_count FROM $wpdb->posts
                                       WHERE post_status = 'publish' and post_date <= now( )
                                       and post_type = 'post'
                                       GROUP BY month , year
                                       ORDER BY post_date DESC");
-          foreach ($months as $month) :
-            $year_current = $month->year;
-            if ($year_current != $year_prev) {
-              if ($year_prev != null) { ?>
+            foreach ($months as $month) :
+              $year_current = $month->year;
+              if ($year_current != $year_prev) {
+                if ($year_prev != null) { ?>
             <?php } ?>
             <p class="sidebar-accordion__year js-accordion__year"><?php echo $month->year; ?></p>
             <div class="sidebar-accordion__month-box">
@@ -146,7 +150,7 @@
                   </a>
                 </li>
                 <?php $year_prev = $year_current;
-          endforeach; ?>
+              endforeach; ?>
               </ul>
             </div>
           </div>

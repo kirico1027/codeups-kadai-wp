@@ -17,6 +17,7 @@
         $campaign_category_fun_diving = esc_url(home_url("/campaign_category/fun_diving"));
         $privacypolicy = esc_url(home_url("/privacypolicy"));
         $terms_of_service = esc_url(home_url("/terms-of-service"));
+        $sitemap = esc_url(home_url("/sitemap"));
         ?>
 
         <div class="footer__head-box">
@@ -63,7 +64,7 @@
                     <a href="<?php echo $information; ?>">ダイビング情報</a>
                   </div>
                   <div class="footer__nav-item">
-                    <a href="<?php $information; ?>?tab=tab01">ライセンス講習</a>
+                    <a href="<?php echo $information; ?>?tab=tab01">ライセンス講習</a>
                   </div>
                   <div class="footer__nav-item">
                     <a href="<?php echo $information; ?>?tab=tab03">体験ダイビング</a>
@@ -87,13 +88,13 @@
                     <a href="<?php echo $price; ?>">料金一覧</a>
                   </div>
                   <div class="footer__nav-item">
-                    <a href="<?php echo $price; ?>">ライセンス講習</a>
+                    <a href="<?php echo $price; ?>#price-license">ライセンス講習</a>
                   </div>
                   <div class="footer__nav-item">
-                    <a href="<?php echo $price; ?>">体験ダイビング</a>
+                    <a href="<?php echo $price; ?>#price-trial">体験ダイビング</a>
                   </div>
                   <div class="footer__nav-item">
-                    <a href="<?php echo $price; ?>">ファンダイビング</a>
+                    <a href="<?php echo $price; ?>#price-fun">ファンダイビング</a>
                   </div>
                 </div>
               </div>
@@ -110,6 +111,9 @@
                 <div class="footer__nav-item footer__nav-item--main">
                   <a href="<?php echo $contact; ?>">お問い合わせ</a>
                 </div>
+                <div class="footer__nav-item footer__nav-item--main">
+                  <a href="<?php echo $sitemap; ?>">サイトマップ</a>
+                </div>
               </div>
             </div>
           </div>
@@ -119,6 +123,7 @@
       </div>
     </div>
   </footer>
+  <a href="#" class="layout-page-top page-top js-page-top"></a>
   <?php wp_footer(); ?>
   </body>
 

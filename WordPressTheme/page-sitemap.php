@@ -65,7 +65,7 @@
                 </div>
               </div>
               <div class="sitemap-nav__item sitemap-nav__item--main">
-                <a href="<?php $blog; ?>">ブログ</a>
+                <a href="<?php echo $blog; ?>">ブログ</a>
               </div>
             </div>
           </div>
@@ -79,13 +79,13 @@
                   <a href="<?php echo $price; ?>">料金一覧</a>
                 </div>
                 <div class="sitemap-nav__item">
-                  <a href="<?php echo $price; ?>">ライセンス講習</a>
+                  <a href="<?php echo $price; ?>#price-license">ライセンス講習</a>
                 </div>
                 <div class="sitemap-nav__item">
-                  <a href="<?php echo $price; ?>">体験ダイビング</a>
+                  <a href="<?php echo $price; ?>#price-trial">体験ダイビング</a>
                 </div>
-                <div class="sitemap-nav__item">
-                  <a href="<?php echo $price; ?>">ファンダイビング</a>
+                <div class=" sitemap-nav__item">
+                  <a href="<?php echo $price; ?>#price-fun">ファンダイビング</a>
                 </div>
               </div>
             </div>

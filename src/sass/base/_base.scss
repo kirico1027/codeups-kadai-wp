@@ -40,3 +40,12 @@
     }
   }
 }
+
+// 追加
+:root {
+  scroll-padding-top: rem(80);
+
+  @include mq(md) {
+    scroll-padding-top: rem(90);
+  }
+}

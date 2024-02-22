@@ -8,9 +8,9 @@
   <div class="page-price layout-page-price">
     <div class="page-price__inner inner">
       <ul class="page-price__list">
-        <li class="page-price__item page-price-item">
+        <li class="page-price__item page-price-item" id="price-license">
           <h2 class="page-price-item__title"><span>ライセンス講習</span></h2>
-          <dl class="page-price-item__content">
+          <dl class=" page-price-item__content">
             <?php
             $field = SCF::get('price_license');
             foreach ($field as $fields) :
@@ -19,14 +19,15 @@
               <dt class="page-price-item__course">
                 <?php echo esc_html($fields['license_course']); ?>
               </dt>
-              <dd class="page-price-item__price">¥<?php echo esc_html($fields['license_price']); ?></dd>
+              <dd class="page-price-item__price">¥<?php echo esc_html($fields['license_price']); ?>
+              </dd>
             </div>
             <?php endforeach ?>
           </dl>
         </li>
-        <li class="page-price__item page-price-item">
+        <li class="page-price__item page-price-item" id="price-trial">
           <h2 class="page-price-item__title"><span>体験ダイビング</span></h2>
-          <dl class="page-price-item__content">
+          <dl class=" page-price-item__content">
             <?php
             $field = SCF::get('price_trial_diving');
             foreach ($field as $fields) :
@@ -40,9 +41,9 @@
             <?php endforeach ?>
           </dl>
         </li>
-        <li class="page-price__item page-price-item">
+        <li class="page-price__item page-price-item" id="price-fun">
           <h2 class="page-price-item__title"><span>ファンダイビング</span></h2>
-          <dl class="page-price-item__content">
+          <dl class=" page-price-item__content">
             <?php
             $field = SCF::get('price_fun_diving');
             foreach ($field as $fields) :
@@ -56,7 +57,7 @@
             <?php endforeach ?>
           </dl>
         </li>
-        <li class="page-price__item page-price-item">
+        <li class="page-price__item page-price-item" id="price-special">
           <h2 class="page-price-item__title"><span>スペシャルダイビング</span></h2>
           <dl class="page-price-item__content">
             <?php

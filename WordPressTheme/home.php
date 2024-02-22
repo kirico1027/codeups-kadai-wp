@@ -1,5 +1,4 @@
-<?php get_header(); ?>
-<main>
+<?php get_header(); ?> <main>
 
   <?php get_template_part('template-parts/sub-mv'); ?>
 

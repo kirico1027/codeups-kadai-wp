@@ -247,7 +247,14 @@
                 </figure>
               </div>
               <p class="voice-card__text">
-                <?php echo wp_trim_words(get_the_content(), 170, '…'); ?>
+                <?php
+                    $customer_text = get_field("customer_text");
+                    if (mb_strlen($customer_text) > 150) {
+                      echo mb_substr($customer_text, 0, 150, 'UTF-8') . '...';
+                    } else {
+                      echo $customer_text;
+                    }
+                    ?>
               </p>
             </div>
           </a>

@@ -2690,6 +2690,7 @@ span.wpcf7-spinner {
 .page-campaign-card__text {
 	color: #0D2936;
 	display: none;
+	flex: 1;
 	font-family: "Noto Sans JP", sans-serif;
 	font-size: 1rem;
 	font-weight: 400;

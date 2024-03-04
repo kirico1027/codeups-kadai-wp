@@ -116,6 +116,7 @@
   line-height: calc(24/16);
   color: $title-color;
   margin-top: rem(24);
+  flex: 1;
 
   @include mq(md) {
     display: block;

@@ -51,18 +51,27 @@
               <div class="voice-card__head">
                 <div class="voice-card__content">
                   <div class="voice-card__box">
-                    <span class="voice-card__info"><?php the_field('personal_info'); ?></span><br><span
-                      class="voice-card__category"><?php
-                  $taxonomy_terms = get_the_terms($post->ID, 'voice_category');
-                  if (!empty($taxonomy_terms)) {
-                    foreach ($taxonomy_terms as $taxonomy_term) {
-                      echo '<span>' . esc_html($taxonomy_term->name) . '</span>';
-                    }
-                  }
-                  ?></span>
+                    <?php
+                        $personalInfo = get_field('personal_info');
+                        if ($personalInfo) :
+                        ?>
+                    <span
+                      class="voice-card__info"><?php echo $personalInfo['personal_age']; ?>代(<?php echo $personalInfo['personal_gender']; ?>)</span>
+                    <?php endif; ?>
+                    <br>
+                    <span class="voice-card__category">
+                      <?php
+                          $taxonomy_terms = get_the_terms($post->ID, 'voice_category');
+                          if (!empty($taxonomy_terms)) {
+                            foreach ($taxonomy_terms as $taxonomy_term) {
+                              echo '<span>' . esc_html($taxonomy_term->name) . '</span>';
+                            }
+                          }
+                          ?>
+                    </span>
                   </div>
                   <h2 class="voice-card__title">
-                    <?php echo wp_trim_words( get_the_title(), 20, '…' ); ?>
+                    <?php echo wp_trim_words(get_the_title(), 20, '…'); ?>
                   </h2>
                 </div>
                 <figure class="voice-card__img js-colorbox">
@@ -75,7 +84,14 @@
                 </figure>
               </div>
               <p class="voice-card__text">
-                <?php the_content(); ?>
+                <?php
+                    $customer_text = get_field("customer_text");
+                    if (mb_strlen($customer_text) > 200) {
+                      echo mb_substr($customer_text, 0, 200, 'UTF-8') . '...';
+                    } else {
+                      echo $customer_text;
+                    }
+                    ?>
               </p>
             </div>
           </a>
@@ -88,8 +104,8 @@
         <div class="pagenavi__inner">
           <div class="pagination">
             <?php if (function_exists('wp_pagenavi')) {
-          wp_pagenavi();
-        } ?>
+              wp_pagenavi();
+            } ?>
           </div>
         </div>
       </div>

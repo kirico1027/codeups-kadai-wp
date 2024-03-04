@@ -55,8 +55,9 @@
             <?php endif; ?>
           </figure>
           <div class="page-campaign-card__body">
-            <div class="page-campaign-card__category">
-              <?php
+            <div>
+              <div class="page-campaign-card__category">
+                <?php
             $taxonomy_terms = get_the_terms(get_the_ID(), 'campaign_category');
             if (!empty($taxonomy_terms)) {
               foreach ($taxonomy_terms as $taxonomy_term) {
@@ -64,19 +65,36 @@
               }
             }
             ?>
+              </div>
+
+              <h2 class="page-campaign-card__title-main"><?php the_title(); ?></h2>
             </div>
-            <h2 class="page-campaign-card__title-main"><?php the_title(); ?></h2>
             <p class="page-campaign-card__title-sub">全部コミコミ(お一人様)</p>
+
+
             <?php if (get_field("price_before") && get_field("price_after")) : ?>
             <p class="page-campaign-card__price">
               <span>¥<?php the_field("price_before"); ?></span>¥<?php the_field("price_after"); ?>
             </p>
             <?php endif; ?>
-            <p class="page-campaign-card__text">ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。<br>
-              ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキスト
+            <p class="page-campaign-card__text">
+              <?php
+                    $campaign_text = get_field("campaign_text");
+                    if (mb_strlen($campaign_text) > 200) {
+                      echo mb_substr($campaign_text, 0, 200, 'UTF-8') . '...';
+                    } else {
+                      echo $campaign_text;
+                    }
+                    ?>
             </p>
             <div class="page-campaign-card__info">
-              <p class="page-campaign-card__period">2023/6/1-9/30</p>
+              <?php
+                        $termGroup = get_field('term_group');
+                        if ($termGroup) :
+                        ?>
+              <p class="page-campaign-card__period">
+                <?php echo $termGroup['term_start']; ?>-<?php echo $termGroup['term_end']; ?></p>
+              <?php endif; ?>
               <p>ご予約・お問い合わせはコチラ</p>
             </div>
             <div class="page-campaign-card__button">

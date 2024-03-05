@@ -258,7 +258,7 @@ SCF::add_options_page(
 	'ギャラリー画像',
 	'ギャラリー画像',
 	'manage_options',
-	'work-option',
+	'gallery-option',
 	'dashicons-format-gallery',
 	11
 );
@@ -266,7 +266,7 @@ SCF::add_options_page(
 	'料金一覧',
 	'料金一覧',
 	'manage_options',
-	'work-option',
+	'price-option',
 	'dashicons-media-text',
 	11
 );
@@ -274,7 +274,7 @@ SCF::add_options_page(
 	'よくある質問',
 	'よくある質問',
 	'manage_options',
-	'work-option',
+	'faq-option',
 	'dashicons-format-status',
 	11
 );

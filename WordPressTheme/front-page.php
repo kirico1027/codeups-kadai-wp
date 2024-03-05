@@ -9,16 +9,24 @@
       <div class="mv__swiper mv-swiper swiper js-mv-swiper">
         <div class="mv-swiper__wrapper swiper-wrapper">
 
-          <?php $fields = SCF::get('mv_image'); ?>
-          <?php foreach ($fields as $field) : ?>
+          <?php
+            $mv_pc_img = get_field('mv_pc');
+            $mv_sp_img = get_field('mv_sp');
+            $mv_alt = get_field('mv_alt');
+            for ($i = 1; $i <= 4; $i++) :
+              $pc_src = $mv_pc_img['mv_pc'.$i];
+              $sp_src = $mv_sp_img['mv_sp'.$i];
+              $alt = $mv_alt['mv_alt'.$i];
+              ?>
           <div class="mv-swiper__slide swiper-slide">
             <picture class="mv-swiper__image">
-              <source srcset="<?php echo wp_get_attachment_url($field['mv_image_pc']); ?>" alt="" media=" (min-width:
-                768px)" type="image/jpg">
-              <img src="<?php echo wp_get_attachment_url($field['mv_image_sp']); ?>" alt="" loading="lazy">
+              <source srcset="<?php echo $pc_src; ?>" alt="" media=" (min-width:
+                768px)" type="image/jpg; ?>">
+              <img src=" <?php echo $sp_src; ?>" alt="<?php echo $alt; ?>" loading="lazy">
             </picture>
           </div>
-          <?php endforeach; ?>
+          <?php endfor; ?>
+
         </div>
       </div>
     </div>

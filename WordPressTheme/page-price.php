@@ -8,71 +8,50 @@
   <div class="page-price layout-page-price">
     <div class="page-price__inner inner">
       <ul class="page-price__list">
+        <?php
+            // プランごとに配列にまとめる
+            $plans = [
+              1 => [
+                'title' => SCF::get_option_meta('price-option','plan_1'),
+                'group' => 'course-1',
+                'course_key' => ['course_1','price_1']
+              ],
+              2 => [
+                'title' => SCF::get_option_meta('price-option','plan_2'),
+                'group' => 'course-2',
+                'course_key' => ['course_2','price_2']
+              ],
+              3 => [
+                'title' => SCF::get_option_meta('price-option','plan_3'),
+                'group' => 'course-3',
+                'course_key' => ['course_3','price_3']
+              ],
+              4 => [
+                'title' => SCF::get_option_meta('price-option','plan_4'),
+                'group' => 'course-4',
+                'course_key' => ['course_4','price_4']
+              ]
+            ];
+          ?>
+        <?php foreach ($plans as $plan) : ?>
         <li class="page-price__item page-price-item" id="price-license">
-          <h2 class="page-price-item__title"><span>ライセンス講習</span></h2>
-          <dl class=" page-price-item__content">
-            <?php
-            $field = SCF::get('price_license');
-            foreach ($field as $fields) :
-            ?>
-            <div class="page-price-item__body">
-              <dt class="page-price-item__course">
-                <?php echo esc_html($fields['license_course']); ?>
-              </dt>
-              <dd class="page-price-item__price">¥<?php echo esc_html($fields['license_price']); ?>
-              </dd>
-            </div>
-            <?php endforeach ?>
-          </dl>
-        </li>
-        <li class="page-price__item page-price-item" id="price-trial">
-          <h2 class="page-price-item__title"><span>体験ダイビング</span></h2>
-          <dl class=" page-price-item__content">
-            <?php
-            $field = SCF::get('price_trial_diving');
-            foreach ($field as $fields) :
-            ?>
-            <div class="page-price-item__body">
-              <dt class="page-price-item__course">
-                <?php echo esc_html($fields['trial_diving_course']); ?>
-              </dt>
-              <dd class="page-price-item__price">¥<?php echo esc_html($fields['trial_diving_price']); ?></dd>
-            </div>
-            <?php endforeach ?>
-          </dl>
-        </li>
-        <li class="page-price__item page-price-item" id="price-fun">
-          <h2 class="page-price-item__title"><span>ファンダイビング</span></h2>
-          <dl class=" page-price-item__content">
-            <?php
-            $field = SCF::get('price_fun_diving');
-            foreach ($field as $fields) :
-            ?>
-            <div class="page-price-item__body">
-              <dt class="page-price-item__course">
-                <?php echo esc_html($fields['fun_diving_course']); ?>
-              </dt>
-              <dd class="page-price-item__price">¥<?php echo esc_html($fields['fun_diving_price']); ?></dd>
-            </div>
-            <?php endforeach ?>
-          </dl>
-        </li>
-        <li class="page-price__item page-price-item" id="price-special">
-          <h2 class="page-price-item__title"><span>スペシャルダイビング</span></h2>
+          <h2 class="page-price-item__title">
+            <span><?php echo $plan['title']; ?></span>
+          </h2>
           <dl class="page-price-item__content">
             <?php
-            $field = SCF::get('price_special_diving');
-            foreach ($field as $fields) :
-            ?>
+                  $course_group = SCF::get_option_meta('price-option', $plan['group']);
+                  foreach ($course_group as $item) :
+                ?>
             <div class="page-price-item__body">
               <dt class="page-price-item__course">
-                <?php echo esc_html($fields['special_diving_course']); ?>
-              </dt>
-              <dd class="page-price-item__price">¥<?php echo esc_html($fields['special_diving_price']); ?></dd>
+                <?php echo $item[$plan['course_key'][0]]; ?></dt>
+              <dd class="page-price-item__price"><?php echo $item[$plan['course_key'][1]]; ?></dd>
             </div>
-            <?php endforeach ?>
+            <?php endforeach; ?>
           </dl>
         </li>
+        <?php endforeach; ?>
       </ul>
     </div>
   </div>

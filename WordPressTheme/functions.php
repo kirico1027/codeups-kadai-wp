@@ -34,11 +34,13 @@ wp_enqueue_style('style-css', get_theme_file_uri() . '/assets/css/style.css', ar
 }
 add_action('wp_enqueue_scripts', 'my_script_init');
 
+
 // body_classから特定のクラスを削除する
 add_filter('body_class', function($classes){
 unset($classes[array_search('blog', $classes)]);
 return $classes;
 });
+
 
 // Contact Form 7で自動挿入されるPタグ、brタグを削除
 add_filter('wpcf7_autop_or_not', 'wpcf7_autop_return_false');
@@ -64,6 +66,7 @@ function redirect_to_thanks_page()
   EOD;
 }
 
+
 // 404ページの場合、文字色を白に変更するスタイルを追加
 function custom_breadcrumb_styles() {
   if (is_404()) {
@@ -74,6 +77,7 @@ function custom_breadcrumb_styles() {
   }
 }
 add_action('wp_head', 'custom_breadcrumb_styles');
+
 
 // アーカイブの表示投稿数の制御
 function my_pre_get_posts($query)
@@ -240,3 +244,37 @@ function remove_protected($title)
 {
   return '%s';
 }
+
+/**
+ * @param string $page_title ページのtitle属性値
+ * @param string $menu_title 管理画面のメニューに表示するタイトル
+ * @param string $capability メニューを操作できる権限（maange_options とか）
+ * @param string $menu_slug オプションページのスラッグ。ユニークな値にすること。
+ * @param string|null $icon_url メニューに表示するアイコンの URL
+ * @param int $position メニューの位置
+ */
+
+SCF::add_options_page(
+	'ギャラリー画像',
+	'ギャラリー画像',
+	'manage_options',
+	'work-option',
+	'dashicons-format-gallery',
+	11
+);
+SCF::add_options_page(
+	'料金一覧',
+	'料金一覧',
+	'manage_options',
+	'work-option',
+	'dashicons-media-text',
+	11
+);
+SCF::add_options_page(
+	'よくある質問',
+	'よくある質問',
+	'manage_options',
+	'work-option',
+	'dashicons-format-status',
+	11
+);

@@ -10,19 +10,18 @@
         <div class="mv-swiper__wrapper swiper-wrapper">
 
           <?php
-            $mv_pc_img = get_field('mv_pc');
-            $mv_sp_img = get_field('mv_sp');
-            $mv_alt = get_field('mv_alt');
-            for ($i = 1; $i <= 4; $i++) :
-              $pc_src = $mv_pc_img['mv_pc'.$i];
-              $sp_src = $mv_sp_img['mv_sp'.$i];
-              $alt = $mv_alt['mv_alt'.$i];
-              ?>
+          $mv_pc_img = get_field('mv_pc');
+          $mv_sp_img = get_field('mv_sp');
+          $mv_alt = get_field('mv_alt');
+          for ($i = 1; $i <= 4; $i++) :
+            $pc_src = $mv_pc_img['mv_pc' . $i];
+            $sp_src = $mv_sp_img['mv_sp' . $i];
+            $alt = $mv_alt['mv_alt' . $i];
+          ?>
           <div class="mv-swiper__slide swiper-slide">
             <picture class="mv-swiper__image">
-              <source srcset="<?php echo $pc_src; ?>" alt="" media=" (min-width:
-                768px)" type="image/jpg; ?>">
-              <img src=" <?php echo $sp_src; ?>" alt="<?php echo $alt; ?>" loading="lazy">
+              <source srcset="<?php echo $pc_src; ?>" media=" (min-width:768px)" type="image/jpg">
+              <img src="<?php echo $sp_src; ?>" alt="<?php echo $alt; ?>">
             </picture>
           </div>
           <?php endfor; ?>
@@ -49,12 +48,13 @@
             <?php
             $args = array(
               "post_type" => "campaign",
-              "posts_per_page" => 4,
+              "posts_per_page" => -1,
+              'orderby'        => 'date',
+              'order'          => 'DESC'
             );
             $the_query = new WP_Query($args);
             ?>
             <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
-
             <li class="campaign__card campaign-card swiper-slide">
               <div class="campaign-card__item">
                 <figure class="campaign-card__img">
@@ -67,22 +67,16 @@
                 </figure>
                 <div class="campaign-card__body">
                   <div class="campaign-card__category">
-                    <?php
-                      $taxonomy_terms = get_the_terms($post->ID, 'campaign_category');
-                      if (!empty($taxonomy_terms) && !is_wp_error($taxonomy_terms)) {
-                        foreach ($taxonomy_terms as $taxonomy_term) {
-                          echo '<span>' . esc_html($taxonomy_term->name) . '</span>';
-                        }
-                      } else {
-                        echo '<span>No category</span>'; // タクソノミーが存在しない場合の処理を追加
-                      }
-                      ?>
+                    <span><?php echo get_the_terms(get_the_ID(), 'campaign_category')[0]->name; ?></span>
                   </div>
                   <h2 class="campaign-card__title-main"><?php the_title(); ?></h2>
                   <p class="campaign-card__title-sub">全部コミコミ(お一人様)</p>
+                  <?php $priceGroup = get_field('price_group');
+                    if ($priceGroup['price_before'] && $priceGroup['price_after']) : ?>
                   <p class="campaign-card__price">
-                    <span>¥<?php the_field("price_before"); ?></span>¥<?php the_field("price_after"); ?>
+                    <span>¥<?php echo $priceGroup['price_before']; ?></span>¥<?php echo $priceGroup['price_after']; ?>
                   </p>
+                  <?php endif; ?>
                 </div>
               </div>
             </li>
@@ -168,6 +162,8 @@
         $args = array(
           "post_type" => "post",
           "posts_per_page" => 3,
+          'orderby'        => 'date',
+          'order'          => 'DESC'
         );
         $the_query = new WP_Query($args);
         if ($the_query->have_posts()) :
@@ -196,9 +192,7 @@
         </li>
         <?php
           endwhile;
-          wp_reset_postdata(); // メインクエリのリセット
-        else :
-          echo "<p>該当する投稿はありません。</p>"; // 投稿が見つからない場合のメッセージ
+          wp_reset_postdata();
         endif;
         ?>
       </ul>
@@ -219,6 +213,7 @@
         $args = array(
           "post_type" => "voice",
           "posts_per_page" => 2,
+          'orderby' => 'rand'
         );
         $the_query = new WP_Query($args);
         if ($the_query->have_posts()) :
@@ -230,16 +225,15 @@
               <div class="voice-card__head">
                 <div class="voice-card__content">
                   <div class="voice-card__box">
-                    <span class="voice-card__info"><?php the_field('personal_info'); ?></span><br><span
-                      class="voice-card__category">
+                    <span class="voice-card__info">
                       <?php
-                          $taxonomy_terms = get_the_terms($post->ID, 'voice_category');
-                          if (!empty($taxonomy_terms)) {
-                            foreach ($taxonomy_terms as $taxonomy_term) {
-                              echo '<span>' . esc_html($taxonomy_term->name) . '</span>';
-                            }
-                          }
-                          ?></span>
+                        $personalInfo = get_field('personal_info');
+                        if ($personalInfo) :
+                        ?>
+                      <?php echo $personalInfo['personal_age']; ?>代(<?php echo $personalInfo['personal_gender']; ?>)
+                      <?php endif; ?>
+                    </span><br><span class="voice-card__category">
+                      <span><?php echo get_the_terms(get_the_ID(), 'voice_category')[0]->name; ?></span>
                   </div>
                   <h2 class="voice-card__title">
                     <?php echo wp_trim_words(get_the_title(), 20, '…'); ?>
@@ -292,78 +286,49 @@
               alt="海底の岩場にひしめくサンゴとその周りに群れる赤色の鮮やかな小魚の画像" loading="lazy">
           </picture>
           <ul class="price__list">
+
+            <?php
+            // プランごとに配列にまとめる
+            $plans = [
+              1 => [
+                'title' => SCF::get_option_meta('price-option','plan_1'),
+                'group' => 'course-1',
+                'course_key' => ['course_1','price_1']
+              ],
+              2 => [
+                'title' => SCF::get_option_meta('price-option','plan_2'),
+                'group' => 'course-2',
+                'course_key' => ['course_2','price_2']
+              ],
+              3 => [
+                'title' => SCF::get_option_meta('price-option','plan_3'),
+                'group' => 'course-3',
+                'course_key' => ['course_3','price_3']
+              ],
+              4 => [
+                'title' => SCF::get_option_meta('price-option','plan_4'),
+                'group' => 'course-4',
+                'course_key' => ['course_4','price_4']
+              ]
+            ];
+          ?>
+            <?php foreach ($plans as $plan) : ?>
             <li class="price__item price-item">
-              <h3 class="price-item__title">ライセンス講習</h3>
+              <h3 class="price-item__title"><?php echo $plan['title']; ?></h3>
               <dl class="price-item__content">
                 <?php
-                $group_set = SCF::get('price_license', 115);
-                foreach ($group_set as $field_name => $field_value) {
+                  $course_group = SCF::get_option_meta('price-option', $plan['group']);
+                  foreach ($course_group as $item) :
                 ?>
                 <div class="price-item__body">
                   <dt class="price-item__course">
-                    <?php echo esc_html($field_value['license_course']); ?>
-                  </dt>
-                  <dd class="price-item__price">
-                    ¥<?php echo esc_html($field_value['license_price']); ?>
-                  </dd>
+                    <?php echo $item[$plan['course_key'][0]]; ?></dt>
+                  <dd class="price-item__price"><?php echo $item[$plan['course_key'][1]]; ?></dd>
                 </div>
-                <?php } ?>
+                <?php endforeach; ?>
               </dl>
             </li>
-            <li class="price__item price-item">
-              <h3 class="price-item__title">体験ダイビング</h3>
-              <dl class="price-item__content">
-                <?php
-                $group_set = SCF::get('price_trial_diving', 115);
-                foreach ($group_set as $field_name => $field_value) {
-                ?>
-                <div class="price-item__body">
-                  <dt class="price-item__course">
-                    <?php echo esc_html($field_value['trial_diving_course']); ?>
-                  </dt>
-                  <dd class="price-item__price">
-                    ¥<?php echo esc_html($field_value['trial_diving_price']); ?>
-                  </dd>
-                </div>
-                <?php } ?>
-              </dl>
-            </li>
-            <li class="price__item price-item">
-              <h3 class="price-item__title">ファンダイビング</h3>
-              <dl class="price-item__content">
-                <?php
-                $group_set = SCF::get('price_fun_diving', 115);
-                foreach ($group_set as $field_name => $field_value) {
-                ?>
-                <div class="price-item__body">
-                  <dt class="price-item__course">
-                    <?php echo esc_html($field_value['fun_diving_course']); ?>
-                  </dt>
-                  <dd class="price-item__price">
-                    ¥<?php echo esc_html($field_value['fun_diving_price']); ?>
-                  </dd>
-                </div>
-                <?php } ?>
-              </dl>
-            </li>
-            <li class="price__item price-item">
-              <h3 class="price-item__title">スペシャルダイビング</h3>
-              <dl class="price-item__content">
-                <?php
-                $group_set = SCF::get('price_special_diving', 115);
-                foreach ($group_set as $field_name => $field_value) {
-                ?>
-                <div class="price-item__body">
-                  <dt class="price-item__course">
-                    <?php echo esc_html($field_value['special_diving_course']); ?>
-                  </dt>
-                  <dd class="price-item__price">
-                    ¥<?php echo esc_html($field_value['special_diving_price']); ?>
-                  </dd>
-                </div>
-                <?php } ?>
-              </dl>
-            </li>
+            <?php endforeach; ?>
           </ul>
         </div>
         <div class="price__button">

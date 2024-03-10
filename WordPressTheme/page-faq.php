@@ -10,16 +10,19 @@
     <div class="page-faq__inner inner">
       <ul class="page-faq__list">
         <?php
-            $field = SCF::get('faq');
-            foreach ($field as $fields) :
-            ?>
+        $field = SCF::get('faq');
+        if ($field) :
+          foreach ($field as $fields) :
+        ?>
         <li class="page-faq__item faq-item">
           <h2 class="faq-item__question js-faq-question"><?php echo esc_html($fields['faq_question']); ?></h2>
           <p class="faq-item__answer">
             <?php echo esc_html($fields['faq_answer']); ?>
           </p>
         </li>
-        <?php endforeach ?>
+        <?php endforeach;
+        endif;
+        ?>
       </ul>
     </div>
   </div>

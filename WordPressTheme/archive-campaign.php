@@ -7,7 +7,6 @@
 
   <div class="page-campaign layout-page-campaign">
     <div class="page-campaign__inner inner">
-
       <div class="page-campaign__category-list category-list">
         <?php
         $current_term_id = 0;
@@ -20,14 +19,14 @@
         ));
         ?>
         <ul class="category-list__items">
-          <li class="category-list__item <?php echo (is_post_type_archive()) ? 'is-active' : ''; ?>">
+          <li class="category-list__item is-active">
             <a href="<?php echo esc_url(home_url('campaign')); ?>">ALL</a>
           </li>
 
           <?php
-          if ($terms) {
-            foreach ($terms as $term) {
-              $term_class = ($current_term_id === $term->term_id) ? 'is-active' : '';
+          if ($terms) :
+            foreach ($terms as $term) :
+              $term_class = ($current_term_id === $term->term_id) ?: '';
           ?>
           <li class="category-list__item <?php echo esc_attr($term_class); ?>">
             <a href="<?php echo esc_url(get_term_link($term->term_id)); ?>">
@@ -35,16 +34,14 @@
             </a>
           </li>
           <?php
-            }
-          }
+            endforeach;
+          endif;
           ?>
         </ul>
       </div>
       <ul class="page-campaign__cards">
         <?php if (have_posts()) : ?>
         <?php while (have_posts()) : the_post(); ?>
-        <?php setup_postdata($post); ?>
-
         <li class="page-campaign__card page-campaign-card">
           <figure class="page-campaign-card__img">
             <?php if (has_post_thumbnail()) : ?>
@@ -58,42 +55,48 @@
             <div>
               <div class="page-campaign-card__category">
                 <?php
-            $taxonomy_terms = get_the_terms(get_the_ID(), 'campaign_category');
-            if (!empty($taxonomy_terms)) {
-              foreach ($taxonomy_terms as $taxonomy_term) {
-                echo '<span>' . esc_html($taxonomy_term->name) . '</span>';
-              }
-            }
-            ?>
+                    $taxonomy_terms = get_the_terms(get_the_ID(), 'campaign_category');
+                    if (!empty($taxonomy_terms)) {
+                      foreach ($taxonomy_terms as $taxonomy_term) {
+                        echo '<span>' . esc_html($taxonomy_term->name) . '</span>';
+                      }
+                    }
+                    ?>
               </div>
 
               <h2 class="page-campaign-card__title-main"><?php the_title(); ?></h2>
             </div>
             <p class="page-campaign-card__title-sub">全部コミコミ(お一人様)</p>
-
-
-            <?php if (get_field("price_before") && get_field("price_after")) : ?>
+            <?php
+                    $priceGroup = get_field('price_group');
+                    if ($priceGroup) :
+                    ?>
             <p class="page-campaign-card__price">
-              <span>¥<?php the_field("price_before"); ?></span>¥<?php the_field("price_after"); ?>
+              <?php if (!empty($priceGroup['price_before'])) : ?>
+              <span>¥<?php echo $priceGroup['price_before']; ?></span>
+              <?php endif; ?>
+              <?php if (!empty($priceGroup['price_after'])) : ?>
+              ¥<?php echo $priceGroup['price_after']; ?>
+              <?php endif; ?>
             </p>
             <?php endif; ?>
             <p class="page-campaign-card__text">
               <?php
-                    $campaign_text = get_field("campaign_text");
-                    if (mb_strlen($campaign_text) > 200) {
-                      echo mb_substr($campaign_text, 0, 200, 'UTF-8') . '...';
-                    } else {
-                      echo $campaign_text;
-                    }
-                    ?>
+                  $campaign_text = get_field("campaign_text");
+                  if (mb_strlen($campaign_text) > 200) {
+                    echo mb_substr($campaign_text, 0, 200, 'UTF-8') . '...';
+                  } else {
+                    echo $campaign_text;
+                  }
+                  ?>
             </p>
             <div class="page-campaign-card__info">
               <?php
-                        $termGroup = get_field('term_group');
-                        if ($termGroup) :
-                        ?>
+                  $termGroup = get_field('term_group');
+                  if ($termGroup) :
+                  ?>
               <p class="page-campaign-card__period">
-                <?php echo $termGroup['term_start']; ?>-<?php echo $termGroup['term_end']; ?></p>
+                <?php echo $termGroup['term_start']; ?>〜<?php echo $termGroup['term_end']; ?></p>
               <?php endif; ?>
               <p>ご予約・お問い合わせはコチラ</p>
             </div>
@@ -104,10 +107,8 @@
         </li>
 
         <?php endwhile; ?>
-        <?php wp_reset_postdata(); ?>
         <?php endif; ?>
       </ul>
-
 
     </div>
   </div>

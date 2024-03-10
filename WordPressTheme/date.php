@@ -9,7 +9,7 @@
     </picture>
     <h1 class="sub-mv__title">
       <?php
-      echo is_month() ? the_time("Y年m月") : '';
+      the_archive_title();
       ?>
     </h1>
   </section>
@@ -36,7 +36,8 @@
                       <?php endif; ?>
                     </figure>
                     <div class="blog-card__body">
-                      <time datetime="2023-11-17" class="blog-card__date date"><?php the_time('Y.m/d'); ?></time>
+                      <time datetime="<?php the_time('c'); ?>"
+                        class="blog-card__date date"><?php the_time('Y.m/d'); ?></time>
                       <h2 class="blog-card__title"><?php echo wp_trim_words( get_the_title(), 16, '…' ); ?></h2>
                       <p class="blog-card__text">
                         <?php echo wp_trim_words( get_the_content(), 90, '…' ); ?>
@@ -62,13 +63,14 @@
 
         </div>
 
-        <?php get_template_part('template-parts/aside'); ?>
+        <?php get_sidebar(); ?>
 
       </div>
     </div>
   </div>
 
   <?php get_template_part('template-parts/cta-contact'); ?>
+
 
 </main>
 <?php get_footer(); ?>

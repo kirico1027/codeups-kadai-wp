@@ -52,22 +52,26 @@
         <h2 class="section-title__sub">フォト</h2>
       </div>
       <div class="page-about-gallery__container">
-
-        <?php $fields = SCF::get('about-us_gallery'); ?>
-        <?php foreach($fields as $field): ?>
-        <?php if($field['gallery_image']): ?>
+        <?php
+        $fields = SCF::get('about-us_gallery');
+        if ($fields) :
+          foreach ($fields as $field) :
+            if ($field['gallery_image']) :
+        ?>
         <div class="page-about-gallery__image">
           <img src="<?php echo wp_get_attachment_url($field['gallery_image']); ?>" alt="">
         </div>
-        <?php endif; ?>
-        <?php endforeach; ?>
-
+        <?php
+            endif;
+          endforeach;
+        endif;
+        ?>
       </div>
       <div class="page-about-gallery__modal modal-image"></div>
     </div>
   </section>
 
   <?php get_template_part('template-parts/cta-contact'); ?>
-  
+
 </main>
 <?php get_footer(); ?>

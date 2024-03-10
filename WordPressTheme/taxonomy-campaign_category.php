@@ -8,16 +8,11 @@
         alt="深海に漂う二匹の色鮮やかな黄色のサカナたちの画像" loading="lazy">
     </picture>
     <?php
-    $term_name = '';
-    if (is_tax()) {
-      $term = get_queried_object();
-      if ($term && $term->name) {
-        $term_name = $term->name;
-      }
-    }
+    $cat = get_queried_object();
+    $cat_name = $cat->name;
     ?>
     <h1 class="sub-mv__title">
-      <?php echo esc_html($term_name); ?>
+      <?php echo esc_html($cat_name); ?>
     </h1>
 
   </section>
@@ -27,43 +22,37 @@
   <div class=" page-campaign layout-page-campaign">
     <div class="page-campaign__inner inner">
       <div class="page-campaign__category-list category-list">
+        <?php
+        $current_term_id = 0;
+        $queried_object = get_queried_object();
+        $terms = get_terms(array(
+          'taxonomy' => 'campaign_category',
+          'orderby' => 'name',
+          'order' => 'ASC',
+          'number' => 10
+        ));
+        ?>
         <ul class="category-list__items">
+          <li class="category-list__item">
+            <a href="<?php echo esc_url(home_url('campaign')); ?>">ALL</a>
+          </li>
+
           <?php
-          $current_post_type = get_post_type();
-          $post_type_archive_class = ($current_post_type === 'campaign' && !is_tax()) ? 'is-active' : '';
-          $post_type_archive_link = sprintf(
-            '<li class="category-list__item %s"><a href="%s" alt="%s">ALL</a></li>',
-            $post_type_archive_class,
-            esc_url(home_url('/campaign')),
-            esc_attr(__('View all posts', 'textdomain'))
-          );
-          echo sprintf(esc_html__('%s', 'textdomain'), $post_type_archive_link);
-
-          $current_term_id = get_queried_object_id();
-          $terms = get_terms(array(
-            'taxonomy' => 'campaign_category',
-            'orderby' => 'name',
-            'order' => 'ASC',
-            'number' => 5
-          ));
-
-          if ($terms) {
-            foreach ($terms as $term) {
-              $term_class = ($current_term_id === $term->term_id) ? 'is-active' : '';
-              $term_link = sprintf(
-                '<li class="category-list__item %s"><a href="%s" alt="%s">%s</a></li>',
-                $term_class,
-                esc_url(get_term_link($term->term_id)),
-                esc_attr(sprintf(__('View all posts in %s', 'textdomain'), $term->name)),
-                esc_html($term->name)
-              );
-              echo sprintf(esc_html__('%s', 'textdomain'), $term_link);
-            }
-          }
+          if ($terms) :
+            foreach ($terms as $term) :
+              $term_class = ($cat_name === $term->name) ? 'is-active' : '';
           ?>
+          <li class="category-list__item <?php echo esc_attr($term_class); ?>">
+            <a href="<?php echo esc_url(get_term_link($term->term_id)); ?>">
+              <?php echo esc_html($term->name); ?>
+            </a>
+          </li>
+          <?php
+            endforeach;
+          endif;
+        ?>
         </ul>
       </div>
-
       <ul class="page-campaign__cards">
         <?php
         $genre_slug = get_query_var('campaign_category');
@@ -95,37 +84,45 @@
             <div>
               <div class="page-campaign-card__category">
                 <?php
-                  $taxonomy_terms = get_the_terms($post->ID, 'campaign_category');
-                  if (!empty($taxonomy_terms)) {
-                    foreach ($taxonomy_terms as $taxonomy_term) {
-                      echo '<span>' . esc_html($taxonomy_term->name) . '</span>';
+                    $taxonomy_terms = get_the_terms(get_the_ID(), 'campaign_category');
+                    if (!empty($taxonomy_terms)) {
+                      foreach ($taxonomy_terms as $taxonomy_term) {
+                        echo '<span>' . esc_html($taxonomy_term->name) . '</span>';
+                      }
                     }
-                  }
-                  ?>
+                    ?>
               </div>
               <h2 class="page-campaign-card__title-main"><?php the_title(); ?></h2>
             </div>
             <p class="page-campaign-card__title-sub">全部コミコミ(お一人様)</p>
-            <?php if (get_field("price_before") && get_field("price_after")) : ?>
+            <?php
+                    $priceGroup = get_field('price_group');
+                    if ($priceGroup) :
+                    ?>
             <p class="page-campaign-card__price">
-              <span>¥<?php the_field("price_before"); ?></span>¥<?php the_field("price_after"); ?>
+              <?php if (!empty($priceGroup['price_before'])) : ?>
+              <span>¥<?php echo $priceGroup['price_before']; ?></span>
+              <?php endif; ?>
+              <?php if (!empty($priceGroup['price_after'])) : ?>
+              ¥<?php echo $priceGroup['price_after']; ?>
+              <?php endif; ?>
             </p>
             <?php endif; ?>
             <p class="page-campaign-card__text">
               <?php
-                    $campaign_text = get_field("campaign_text");
-                    if (mb_strlen($campaign_text) > 200) {
-                      echo mb_substr($campaign_text, 0, 200, 'UTF-8') . '...';
-                    } else {
-                      echo $campaign_text;
-                    }
-                    ?>
+                  $campaign_text = get_field("campaign_text");
+                  if (mb_strlen($campaign_text) > 200) {
+                    echo mb_substr($campaign_text, 0, 200, 'UTF-8') . '...';
+                  } else {
+                    echo $campaign_text;
+                  }
+                  ?>
             </p>
             <div class="page-campaign-card__info">
               <?php
-                        $termGroup = get_field('term_group');
-                        if ($termGroup) :
-                        ?>
+                  $termGroup = get_field('term_group');
+                  if ($termGroup) :
+                  ?>
               <p class="page-campaign-card__period">
                 <?php echo $termGroup['term_start']; ?>-<?php echo $termGroup['term_end']; ?></p>
               <?php endif; ?>

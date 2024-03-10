@@ -21,14 +21,14 @@
         ?>
 
         <ul class="category-list__items">
-          <li class="category-list__item <?php echo (is_post_type_archive()) ? 'is-active' : ''; ?>">
+          <li class="category-list__item is-active">
             <a href="<?php echo esc_url(home_url('voice')); ?>">ALL</a>
           </li>
 
           <?php
-          if ($terms) {
-            foreach ($terms as $term) {
-              $term_class = ($current_term_id === $term->term_id) ? 'is-active' : '';
+          if ($terms) :
+            foreach ($terms as $term) :
+              $term_class = ($current_term_id === $term->term_id) ?: '';
           ?>
           <li class="category-list__item <?php echo esc_attr($term_class); ?>">
             <a href="<?php echo esc_url(get_term_link($term->term_id)); ?>">
@@ -36,8 +36,8 @@
             </a>
           </li>
           <?php
-            }
-          }
+            endforeach;
+          endif;
           ?>
         </ul>
       </div>
@@ -61,7 +61,7 @@
                     <br>
                     <span class="voice-card__category">
                       <?php
-                          $taxonomy_terms = get_the_terms($post->ID, 'voice_category');
+                          $taxonomy_terms = get_the_terms(get_the_ID(), 'voice_category');
                           if (!empty($taxonomy_terms)) {
                             foreach ($taxonomy_terms as $taxonomy_term) {
                               echo '<span>' . esc_html($taxonomy_term->name) . '</span>';
@@ -86,10 +86,12 @@
               <p class="voice-card__text">
                 <?php
                     $customer_text = get_field("customer_text");
-                    if (mb_strlen($customer_text) > 200) {
-                      echo mb_substr($customer_text, 0, 200, 'UTF-8') . '...';
-                    } else {
-                      echo $customer_text;
+                    if (!empty($customer_text)) {
+                      if (mb_strlen($customer_text) > 200) {
+                        echo mb_substr($customer_text, 0, 200, 'UTF-8') . '...';
+                      } else {
+                        echo $customer_text;
+                      }
                     }
                     ?>
               </p>

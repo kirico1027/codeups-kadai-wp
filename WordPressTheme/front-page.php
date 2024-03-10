@@ -71,10 +71,18 @@
                   </div>
                   <h2 class="campaign-card__title-main"><?php the_title(); ?></h2>
                   <p class="campaign-card__title-sub">全部コミコミ(お一人様)</p>
-                  <?php $priceGroup = get_field('price_group');
-                    if ($priceGroup['price_before'] && $priceGroup['price_after']) : ?>
-                  <p class="campaign-card__price">
-                    <span>¥<?php echo $priceGroup['price_before']; ?></span>¥<?php echo $priceGroup['price_after']; ?>
+
+                  <?php
+                    $priceGroup = get_field('price_group');
+                    if ($priceGroup) :
+                    ?>
+                  <p class="page-campaign-card__price">
+                    <?php if (!empty($priceGroup['price_before'])) : ?>
+                    <span>¥<?php echo $priceGroup['price_before']; ?></span>
+                    <?php endif; ?>
+                    <?php if (!empty($priceGroup['price_after'])) : ?>
+                    ¥<?php echo $priceGroup['price_after']; ?>
+                    <?php endif; ?>
                   </p>
                   <?php endif; ?>
                 </div>
@@ -227,9 +235,9 @@
                   <div class="voice-card__box">
                     <span class="voice-card__info">
                       <?php
-                        $personalInfo = get_field('personal_info');
-                        if ($personalInfo) :
-                        ?>
+                          $personalInfo = get_field('personal_info');
+                          if ($personalInfo) :
+                          ?>
                       <?php echo $personalInfo['personal_age']; ?>代(<?php echo $personalInfo['personal_gender']; ?>)
                       <?php endif; ?>
                     </span><br><span class="voice-card__category">
@@ -291,27 +299,27 @@
             // プランごとに配列にまとめる
             $plans = [
               1 => [
-                'title' => SCF::get_option_meta('price-option','plan_1'),
+                'title' => SCF::get_option_meta('price-option', 'plan_1'),
                 'group' => 'course-1',
-                'course_key' => ['course_1','price_1']
+                'course_key' => ['course_1', 'price_1']
               ],
               2 => [
-                'title' => SCF::get_option_meta('price-option','plan_2'),
+                'title' => SCF::get_option_meta('price-option', 'plan_2'),
                 'group' => 'course-2',
-                'course_key' => ['course_2','price_2']
+                'course_key' => ['course_2', 'price_2']
               ],
               3 => [
-                'title' => SCF::get_option_meta('price-option','plan_3'),
+                'title' => SCF::get_option_meta('price-option', 'plan_3'),
                 'group' => 'course-3',
-                'course_key' => ['course_3','price_3']
+                'course_key' => ['course_3', 'price_3']
               ],
               4 => [
-                'title' => SCF::get_option_meta('price-option','plan_4'),
+                'title' => SCF::get_option_meta('price-option', 'plan_4'),
                 'group' => 'course-4',
-                'course_key' => ['course_4','price_4']
+                'course_key' => ['course_4', 'price_4']
               ]
             ];
-          ?>
+            ?>
             <?php foreach ($plans as $plan) : ?>
             <li class="price__item price-item">
               <h3 class="price-item__title"><?php echo $plan['title']; ?></h3>
@@ -319,7 +327,7 @@
                 <?php
                   $course_group = SCF::get_option_meta('price-option', $plan['group']);
                   foreach ($course_group as $item) :
-                ?>
+                  ?>
                 <div class="price-item__body">
                   <dt class="price-item__course">
                     <?php echo $item[$plan['course_key'][0]]; ?></dt>

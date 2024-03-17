@@ -44,7 +44,6 @@ $sitemap = esc_url(home_url("/sitemap"));
       <?php else : ?>
     </div>
     <?php endif; ?>
-
     <nav class="header__nav">
       <ul class="header__nav-items">
         <li class="header__nav-item">

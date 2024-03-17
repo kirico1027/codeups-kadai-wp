@@ -53,20 +53,21 @@
       </div>
       <div class="page-about-gallery__container">
         <?php
-        $fields = SCF::get('about-us_gallery');
-        if ($fields) :
-          foreach ($fields as $field) :
-            if ($field['gallery_image']) :
+        $gallery_group = SCF::get_option_meta('gallery-option', 'about-us_gallery');
+        if ($gallery_group) :
+          foreach ($gallery_group as $item) :
         ?>
         <div class="page-about-gallery__image">
-          <img src="<?php echo wp_get_attachment_url($field['gallery_image']); ?>" alt="">
+          <img src="<?php echo wp_get_attachment_url($item['gallery_image']); ?>" alt="">
         </div>
         <?php
-            endif;
           endforeach;
-        endif;
-        ?>
+        else :
+          ?>
+        <p>No images found.</p>
+        <?php endif; ?>
       </div>
+
       <div class="page-about-gallery__modal modal-image"></div>
     </div>
   </section>

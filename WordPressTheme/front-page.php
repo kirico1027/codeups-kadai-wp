@@ -13,18 +13,32 @@
           $mv_pc_img = get_field('mv_pc');
           $mv_sp_img = get_field('mv_sp');
           $mv_alt = get_field('mv_alt');
-          for ($i = 1; $i <= 4; $i++) :
-            $pc_src = $mv_pc_img['mv_pc' . $i];
-            $sp_src = $mv_sp_img['mv_sp' . $i];
-            $alt = $mv_alt['mv_alt' . $i];
+
+          // $mv_pc_img と $mv_sp_img の配列の要素数を取得し、大きい方の数でループを回す
+          $max_items = max(count($mv_pc_img), count($mv_sp_img));
+
+          for ($i = 0; $i < $max_items; $i++) :
+            $pc_key = 'mv_pc' . ($i + 1); // PC用のキー
+            $sp_key = 'mv_sp' . ($i + 1); // SP用のキー
+            $alt_key = 'mv_alt' . ($i + 1); // alt属性用のキー
+
+            // PCとSPの画像が両方存在するかチェック
+            if (!empty($mv_pc_img[$pc_key]) && !empty($mv_sp_img[$sp_key])) {
+              $pc_src = $mv_pc_img[$pc_key];
+              $sp_src = $mv_sp_img[$sp_key];
+              $alt = isset($mv_alt[$alt_key]) ? $mv_alt[$alt_key] : ''; // alt属性が設定されていない場合は空文字をセット
+
           ?>
           <div class="mv-swiper__slide swiper-slide">
             <picture class="mv-swiper__image">
-              <source srcset="<?php echo $pc_src; ?>" media=" (min-width:768px)" type="image/jpg">
+              <source srcset="<?php echo $pc_src; ?>" media="(min-width:768px)" type="image/jpg">
               <img src="<?php echo $sp_src; ?>" alt="<?php echo $alt; ?>">
             </picture>
           </div>
-          <?php endfor; ?>
+          <?php
+            }
+          endfor;
+          ?>
 
         </div>
       </div>

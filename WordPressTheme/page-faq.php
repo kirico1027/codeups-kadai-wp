@@ -10,19 +10,22 @@
     <div class="page-faq__inner inner">
       <ul class="page-faq__list">
         <?php
-        $field = SCF::get('faq');
-        if ($field) :
-          foreach ($field as $fields) :
+        $faq_group = SCF::get_option_meta('faq-option', 'faq');
+        if ($faq_group) :
+          foreach ($faq_group as $item) :
         ?>
         <li class="page-faq__item faq-item">
-          <h2 class="faq-item__question js-faq-question"><?php echo esc_html($fields['faq_question']); ?></h2>
+          <h2 class="faq-item__question js-faq-question"><?php echo $item['faq_question']; ?></h2>
           <p class="faq-item__answer">
-            <?php echo esc_html($fields['faq_answer']); ?>
+            <?php echo $item['faq_answer']; ?>
           </p>
         </li>
-        <?php endforeach;
-        endif;
-        ?>
+        <?php
+          endforeach;
+        else :
+          ?>
+        <li>No FAQs found.</li>
+        <?php endif; ?>
       </ul>
     </div>
   </div>
